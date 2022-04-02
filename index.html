@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Get the Third Highest Number</title>
+        <meta charset="UTF-8">
+    </head>
+
+    <style>
+        html {
+        font-family: sans-serif;
+      }
+      body {
+        width: 50%;
+        max-width: 800px;
+        min-width: 480px;
+        margin: 0 auto;
+      }
+    </style>
+    <body>
+        <h1>Get the Third Highest Number</h1>
+
+        <p>Type in 10 different numbers and we'll give you the 3rd highest.</p>
+
+        <div class="form">
+            <label for="numberAddField">Enter a number to add to the list</label><input type="text" id="numberAddField" class="numberAddField">
+            <input type="submit" value="Add Number" class="submitNumber">
+        </div>
+
+        <div class="listParas">
+            <p class="currentNumbers"></p>
+            <p class="result"></p>
+        </div>
+
+        <script>
+            const currentNumbers = document.querySelector('.currentNumbers');
+            const result = document.querySelector('.result');
+            const numberAddField = document.querySelector('.numberAddField');
+            const submitNumber = document.querySelector('.submitNumber');
+
+            let listSize = 1;
+            let resetButton;
+            let numberList = [];
+
+            function addNumberToList(){
+
+                const userNumber = Number(numberAddField.value);
+                if (listSize===1){
+                    currentNumbers.textContent = "Current numbers in the list: ";
+                }
+                else if (listSize===10){
+                    setListFull()
+                    getThirdHighestNumber()
+
+                }
+                currentNumbers.textContent += userNumber + ', ';
+                listSize++;
+                numberAddField.value = ' ';
+                numberAddField.focus();
+                numberList.push(userNumber);
+    
+            }
+            submitNumber.addEventListener('click', addNumberToList);
+
+            function setListFull(){
+                numberAddField.disabled = true;
+                submitNumber.disabled = true;
+                resetButton = document.createElement('button');
+                resetButton.textContent = 'Clear list, start again.';
+                document.body.appendChild(resetButton);
+                resetButton.addEventListener('click', clearList);
+            }
+
+            function getThirdHighestNumber(){
+                let sortedList = numberList.sort(function(a, b){return b-a});
+                result.textContent = 'The Third Highest number is: ' + sortedList[2];
+            }
+
+            function clearList(){
+                listSize = 1;
+                numberList = [];
+                currentNumbers.textContent = '';
+                result.textContent = '';
+                const resetParas = document.querySelectorAll('.listPara p');
+
+                for (const resetPara of resetParas){
+                    resetPara.textContent = ' ';
+                }
+
+                resetButton.parentNode.removeChild(resetButton);
+
+                numberAddField.disabled = false;
+                submitNumber.disabled = false;
+                numberAddField.value = ' ';
+                numberAddField.focus();
+            }
+        </script>
+    </body>
+</html>
